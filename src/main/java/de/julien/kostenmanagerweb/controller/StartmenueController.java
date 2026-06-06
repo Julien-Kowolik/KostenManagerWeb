@@ -115,6 +115,7 @@ public class StartmenueController {
             return "redirect:/startmenue";
         }
 
+        personRepository.deleteAll(gruppe.getPersonen());
         gruppeRepository.delete(gruppe);
 
         return "redirect:/startmenue";
