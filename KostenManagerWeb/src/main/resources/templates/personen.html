@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personen</title>
+
+    <link rel="stylesheet" href="/CSS/style.css">
+</head>
+
+<body>
+
+<header>
+    <nav class="navigation">
+        <img class="logo" src="/CSS/img/Logo.png">
+
+        <div class="menu">
+            <a class="menu-link" href="/startmenue">Startmenü</a>
+            <a class="menu-link" href="/dashboard">Dashboard</a>
+            <a class="menu-link" href="/ausgaben">Ausgaben</a>
+            <a class="menu-link" href="/budgets">Budgets</a>
+            <a class="menu-link" href="/schulden">Schulden</a>
+            <a class="menu-link" href="/logout">Logout</a>
+        </div>
+    </nav>
+</header>
+
+<main>
+
+    <div class="personen-layout">
+
+        <section class="person-auswahl-box">
+
+            <h1>Personen</h1>
+
+            <p>Wähle eine Person aus, um Details zu sehen.</p>
+
+            <form action="/personen" method="get">
+
+                <label>Person auswählen</label>
+
+                <select name="name" required>
+                    <option value="">Person auswählen</option>
+
+                    <option th:each="person : ${personen}"
+                            th:value="${person}"
+                            th:text="${person}"
+                            th:selected="${person == ausgewaehltePerson}">
+                    </option>
+                </select>
+
+                <button class="button" type="submit">
+                    Anzeigen
+                </button>
+
+            </form>
+
+        </section>
+
+        <section class="person-details"
+                 th:if="${ausgewaehltePerson != null}">
+
+            <div class="person-header-box">
+                <h2 th:text="${ausgewaehltePerson}">Name</h2>
+
+                <p>Persönliche Übersicht</p>
+            </div>
+
+            <div class="person-stats-grid">
+
+                <div class="person-stat-box">
+                    <h3>Gesamtausgaben</h3>
+                    <p>
+                        <span th:text="${gesamtAusgabenPerson}">0</span>
+                        €
+                    </p>
+                </div>
+
+                <div class="person-stat-box">
+                    <h3>Budget</h3>
+                    <p>
+                        <span th:text="${budgetPerson}">0</span>
+                        €
+                    </p>
+                </div>
+
+                <div class="person-stat-box">
+                    <h3>Restbudget</h3>
+                    <p>
+                        <span th:text="${restBudgetPerson}">0</span>
+                        €
+                    </p>
+                </div>
+
+                <div class="person-stat-box">
+                    <h3>Differenz</h3>
+                    <p>
+                        <span th:text="${differenzPerson}">0</span>
+                        €
+                    </p>
+                </div>
+
+                <div class="person-stat-box">
+                    <h3>Schulden</h3>
+                    <p>
+                        <span th:text="${schuldenPerson}">0</span>
+                        €
+                    </p>
+                </div>
+
+                <div class="person-stat-box">
+                    <h3>Anzahl Ausgaben</h3>
+                    <p th:text="${ausgabenAnzahlPerson}">0</p>
+                </div>
+
+            </div>
+
+            <div class="person-ausgaben-box">
+
+                <h2>Ausgaben der Person</h2>
+
+                <div th:if="${ausgabenPerson == null || ausgabenPerson.isEmpty()}">
+                    <p>Diese Person hat noch keine Ausgaben.</p>
+                </div>
+
+                <div class="person-ausgaben-liste"
+                     th:if="${ausgabenPerson != null && !ausgabenPerson.isEmpty()}">
+
+                    <div class="person-ausgabe"
+                         th:each="ausgabe : ${ausgabenPerson}">
+
+                        <h3 th:text="${ausgabe.ausgabeArt()}">Ausgabenart</h3>
+
+                        <p>
+                            Betrag:
+                            <span th:text="${ausgabe.betrag()}">0</span>
+                            €
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+</body>
+</html>
