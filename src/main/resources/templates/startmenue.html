@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Startmenü</title>
+
+  <link rel="stylesheet" href="/CSS/style.css">
+</head>
+
+<body>
+
+<header>
+  <nav class="navigation">
+    <img class="logo" src="/CSS/img/Logo.png">
+
+    <div class="menu">
+      <a class="menu-link" href="/logout">Logout</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <div class="startmenue-layout">
+
+    <section class="startmenue-header">
+      <h1>
+        Willkommen,
+        <span th:text="${username}">Benutzer</span>
+      </h1>
+
+      <p>Erstelle eine neue Gruppe oder öffne eine vorhandene Gruppe.</p>
+    </section>
+
+    <section class="gruppe-erstellen-box">
+      <h2>Neue Gruppe erstellen</h2>
+
+      <form action="/startmenue/gruppe-erstellen" method="post">
+        <label>Gruppenname</label>
+        <input name="gruppenName" required>
+
+        <label>Personen</label>
+        <input name="personenNamen"
+               placeholder="z.B. Tim, Gaby, Max">
+
+        <button class="button button-save" type="submit">
+          Gruppe erstellen
+        </button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Meine Gruppen</h2>
+
+      <div class="gruppen-liste">
+
+        <div class="gruppe-card"
+             th:each="gruppe : ${gruppen}">
+
+          <h3 th:text="${gruppe.gruppenName}">Gruppenname</h3>
+          <p>Teilnehmer:</p>
+
+          <ul>
+            <li th:each="person : ${gruppe.personen}"
+                th:text="${person.name}">
+            </li>
+          </ul>
+          <a class="button"
+             th:href="@{/gruppe/{id}/oeffnen(id=${gruppe.id})}"
+             style="display: inline-block; text-decoration: none;">
+            Gruppe öffnen
+          </a>
+
+          <form action="/gruppe-loeschen"
+                method="post"
+                style="margin-top: 12px;">
+
+            <input type="hidden"
+                   name="gruppenId"
+                   th:value="${gruppe.id}">
+
+            <button class="button button-delete"
+                    type="submit">
+              Gruppe löschen
+            </button>
+
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+</main>
+
+</body>
+</html>

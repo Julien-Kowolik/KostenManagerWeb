@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="/CSS/style.css">
+</head>
+
+<body>
+
+<header>
+    <nav class="navigation">
+        <img class="logo" src="/CSS/img/Logo.png">
+
+        <div class="menu">
+            <a class="menu-link" href="/startmenue">Startmenü</a>
+            <a class="menu-link" href="/ausgaben">Ausgaben</a>
+            <a class="menu-link" href="/budgets">Budgets</a>
+            <a class="menu-link" href="/schulden">Schulden</a>
+            <a class="menu-link" href="/personen">Personen</a>
+            <a class="menu-link" href="/logout">Logout</a>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div class="dashboard-layout">
+
+        <section class="dashboard-boxen">
+
+            <div class="card">
+                <h3>Teilnehmer</h3>
+                <p th:text="${personenAnzahl}">0</p>
+            </div>
+
+            <div class="card">
+                <h3>Gesamtausgaben</h3>
+                <p>
+                    <span th:text="${gesamtBetrag}">0</span> €
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Gruppenbudget</h3>
+                <p>
+                    <span th:text="${gruppenBudget}">0</span> €
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Restbudget</h3>
+                <p>
+                    <span th:text="${gruppenRestBudget}">0</span> €
+                </p>
+            </div>
+
+        </section>
+
+        <section class="dashboard-rechts">
+
+            <div class="info-box">
+                <h2>Wichtigste Informationen</h2>
+
+                <div class="info-row">
+                    <span class="info-label">Höchste Ausgabe</span>
+                    <span class="info-value" th:text="${hoechsteAusgabe}">
+                        Keine Daten
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Größter Schuldner</span>
+                    <span class="info-value" th:text="${groessterSchuldner}">
+                        Keine Daten
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Größter Gläubiger</span>
+                    <span class="info-value" th:text="${groessterGlaeubiger}">
+                        Keine Daten
+                    </span>
+                </div>
+            </div>
+
+            <div class="budget-status-box">
+                <h2>Budgetstatus</h2>
+
+                <div class="budget-row"
+                     th:each="eintrag : ${budgetAnalyse}">
+
+                    <div>
+                        <strong th:text="${eintrag.name()}">Name</strong>
+
+                        <p>
+                            Rest:
+                            <span th:text="${eintrag.restBudget()}">0</span>
+                            €
+                        </p>
+                    </div>
+
+                    <span class="status"
+                          th:classappend="${eintrag.ueberschritten()} ? ' status-bad' : ' status-good'"
+                          th:text="${eintrag.ueberschritten()} ? 'Überschritten' : 'OK'">
+                        OK
+                    </span>
+
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</main>
+
+</body>
+</html>
